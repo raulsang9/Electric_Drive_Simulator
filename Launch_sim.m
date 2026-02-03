@@ -9,8 +9,10 @@ Topology  = 'OW';       % [SC:star-connected, OW, SEW]
 % Test Setup
 speed = 500; % [rpm] Mechanical speed reference
 Tload = 4; % [Nm] Torque load
+Vdc = 50; % [V] DC supply
 
 CtrlFreq = 10e3; % [Hz] Control Frequency
 tsim     = 1;    % [s] Simulation time
 
-load("private\COLORPALETTE_ENSAM.mat");
+[MOTOR, CONTROL, VSC] = load_parameter(Machine, Topology, CtrlSchem, CtrlFreq, Vdc);
+
