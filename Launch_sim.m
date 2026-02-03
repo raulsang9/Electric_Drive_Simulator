@@ -1,5 +1,5 @@
 %% ELECTRIC DRIVE SIMULATOR
-% 
+clear all; close all; clc;
 
 % Configuration SetUp
 CtrlSchem = 'MPC';      % [MPC, MPCVV, FOCcb, FOCsv]
@@ -13,3 +13,4 @@ Tload = 4; % [Nm] Torque load
 CtrlFreq = 10e3; % [Hz] Control Frequency
 tsim     = 1;    % [s] Simulation time
 
+load("private\COLORPALETTE_ENSAM.mat")
