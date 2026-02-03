@@ -13,4 +13,4 @@ Tload = 4; % [Nm] Torque load
 CtrlFreq = 10e3; % [Hz] Control Frequency
 tsim     = 1;    % [s] Simulation time
 
-load("private\COLORPALETTE_ENSAM.mat")
+load("private\COLORPALETTE_ENSAM.mat");
