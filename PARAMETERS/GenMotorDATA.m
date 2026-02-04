@@ -13,6 +13,15 @@ Lx = 0.0004; % [H]
 Ly = 0.0004; % [H]
 Lh = 0.0003; % [H]
 
+Lambda = 0.0138; % [Wb]  Flujo de magnetización del rotor (imanes / ind-Ldm.If)
+kfem=0.0965;
+
+kfem3=kfem*0.08*1;
+Lambda3 = kfem3/P;
+
+kfem5=kfem*0.08*1;
+Lambda5 = kfem5/P;
+
 In = 55; % [A]
 
 % Clarke transformation 

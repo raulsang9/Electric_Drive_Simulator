@@ -12,7 +12,9 @@ Tload = 4; % [Nm] Torque load
 Vdc = 50; % [V] DC supply
 
 CtrlFreq = 10e3; % [Hz] Control Frequency
-tsim     = 1;    % [s] Simulation time
+tsim     = 0.4;    % [s] Simulation time
 
 [MOTOR, CONTROL, VSC] = load_parameter(Machine, Topology, CtrlSchem, CtrlFreq, Vdc);
 
+% Simulation
+% tic; sim("SIMULATOR/ELECTRIC_DRIVE.slx"); elapsed = toc

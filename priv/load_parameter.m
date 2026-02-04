@@ -21,9 +21,9 @@ end
 
 VSC.Vdc = Vdc;
 
-CONTROL.Fctrl = CtrlFreq; % Control frecuency
-CONTROL.Ts = 1/CtrlFreq;  % Control period
-CONTROL.Tm = 1e-6;        % Calculation step period
+CONTROL.Fctrl = CtrlFreq;   % Control frecuency
+CONTROL.Ts = 1/CtrlFreq;    % Control period
+CONTROL.Tm = CONTROL.Ts/100;% Calculation step period
 CONTROL.N_calc = round(CONTROL.Ts/CONTROL.Tm);% Calculation step into a control period 
 
 
