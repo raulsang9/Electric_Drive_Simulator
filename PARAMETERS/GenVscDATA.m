@@ -24,7 +24,7 @@ clear all
 %% Open-end Winding
 % 5 Phase
 
-Type = 'SC 2-Level 9Ph';
+Type = 'OW 2-Level 5Ph';
 C_link = 2000e-6;    % Capacidad del condensador del bus de continua
 NumPhase = 5;      % Número de fases del accionamiento (por defecto: 9)
 NunLev = 2;        % Número de niveles de tensión (por defecto: 2)

@@ -2,8 +2,9 @@ clear all
 
 %% 5Phase PMSM Lille %%
 % Electrical parameters
-Label = 'Lille5Ph';
-Phase=5;
+Type = 'PMSM 5Ph';
+Index = 1; % To activate this subsytem in SIMULINK
+Phase = 5;
 P=7;
 Rs=0.09+0.16; % 0.09 machine resistance - 0.16 conection resistance
 
@@ -44,6 +45,7 @@ clear all
 
 %% 7Phase SM Lille %%
 % Electrical parameters
+Index = 3; % To activate this subsytem in SIMULINK
 Phase = 7;
 P  = 7;
 In = 100;
@@ -90,7 +92,8 @@ clear all
 %% 9Phase PMSM Málaga %%
 % Electrical parameters
 
-Type = 'PMSM';           % Electric machine type (by default: PMSM)
+Type = 'PMSM 9Ph';           % Electric machine type (by default: PMSM)
+Index = 2; % To activate this subsytem in SIMULINK
 Phase = 9;           % Phases number (by default: 9)
 P = 3;             % Pair pole number (by default: 3)
 RatedPower = 15;   % [kW]  Nominal power (por defecto: 15 kW)
@@ -145,4 +148,14 @@ hp2 = 1;
 
 clear vph
 save('PARAMETERS/Malaga9Ph.mat')
+clear all
+
+
+%% 5Phase IM Málaga %%
+Index = 4; % To activate this subsytem in SIMULINK
+Phase = 5;           % Phases number 
+
+
+
+save('PARAMETERS/Malaga5Ph.mat')
 clear all
