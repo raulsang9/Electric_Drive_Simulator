@@ -23,7 +23,7 @@ Lambda3 = kfem3/P;
 kfem5=kfem*0.08*1;
 Lambda5 = kfem5/P;
 
-In = 55; % [A]
+RatedCurr = 55; % [A]
 
 % Clarke transformation 
 ang = 2*pi/5;
@@ -48,7 +48,7 @@ clear all
 Index = 3; % To activate this subsytem in SIMULINK
 Phase = 7;
 P  = 7;
-In = 100;
+RatedCurr = 100;
 
 Rs = 0.1;
 Ld = 0.0014;

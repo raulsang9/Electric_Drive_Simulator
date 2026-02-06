@@ -28,8 +28,13 @@ for i = 1:length(S)
 end
 clear n total_combinations i
 
+[~, indx] = unique(single(V_abxy).', 'rows', 'stable');
+% figure; scatter(V_abxy(1,indx), V_abxy(2,indx), 'filled', 'MarkerFaceAlpha',0.3); axis equal
+
 S = S';
 
 clear MOTOR VSC
 
 save('PARAMETERS\VECTow5ph.mat');
+
+(5/2)*MOTOR.P*(MOTOR.Lambda*u[2]-(MOTOR.Ld-MOTOR.Lq)*u[1]*u[2])
