@@ -18,6 +18,8 @@ Lx = Parm.Lx;
 Ly = Parm.Ly;
 Lh = Parm.Lh;
 Lambda = Parm.Lambda;
+Lambda3 = Parm.Lambda3;
+Lambda5 = Parm.Lambda5;
 kfem = Parm.Lambda * Parm.P;
 kfem3 = Parm.Lambda3 * Parm.P;
 kfem5 = Parm.Lambda5 * Parm.P;
@@ -34,11 +36,11 @@ B=[ 1/Ld   0       0       0    0
     0      0       0    1/Ly    0
     0      0       0       0  1/Lh];
 
-E= -1*[kfem   % E=-wm*[kfem *sin(th)
-      -kfem   %       -kfem *cos(th)
-      -kfem3  %       -kfem3*sin(3*th)
-       kfem3  %        kfem3*cos(3*th)
-       kfem5];%        kfem5*sin(5*th)];
+E= -1*[Lambda   % E=-wm*[kfem *sin(th)
+      -Lambda   %       -kfem *cos(th)
+      -Lambda3  %       -kfem3*sin(3*th)
+       Lambda3  %        kfem3*cos(3*th)
+       Lambda5];%        kfem5*sin(5*th)];
 
 clear Parm
 save('PARAMETERS\MPC_Lille5ph')
