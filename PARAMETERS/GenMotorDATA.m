@@ -23,7 +23,7 @@ Lambda3 = kfem3/P;
 kfem5=kfem*0.08*1;
 Lambda5 = kfem5/P;
 
-RatedCurr = 55; % [A]
+RatedCurr = 70; % [A]
 
 % Clarke transformation 
 ang = 2*pi/5;

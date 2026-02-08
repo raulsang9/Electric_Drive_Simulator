@@ -4,11 +4,11 @@ Index = 1;
 Phase = 5;
 % Factores de peso del MPC
 Kd = 1;    % []    Peso del error en d de la funcion de coste
-Kx = 0.4;  % []    Peso del error en x de la funcion de coste
-Ky = 0.4;  % []    Peso del error en y de la funcion de coste
-Kh = 1.6;  % []    Peso del error en homopolar de la funcion de coste
+Kx = 0.3;  % []    Peso del error en x de la funcion de coste
+Ky = 0.3;  % []    Peso del error en y de la funcion de coste
+Kh = 0.4;  % []    Peso del error en homopolar de la funcion de coste
 
-Parm = load("PARAMETERS\Lille5Ph.mat"); Clarke = Parm.Clarke;
+Parm = load("PARAMETERS\Lille5Ph.mat"); Clarke = Parm.Clarke;invClarke = Parm.invClarke;
 P  = Parm.P;
 In = Parm.RatedCurr;
 Rs = Parm.Rs;

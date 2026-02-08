@@ -8,13 +8,13 @@ Topology  = 'OW';       % [SC:star-connected, OW, SEW]
 
 % Test Setup
 speed = 500; % [rpm] Mechanical speed reference
-Tload = 4;   % [Nm] Torque load
+Tload = 10;   % [Nm] Torque load
 Vdc   = 30;  % [V] DC supply
 
 CtrlFreq = 20e3; % [Hz] Control Frequency
-tsim     = 0.2;  % [s] Simulation time
+tsim     = 0.3;  % [s] Simulation time
 
-[MOTOR, CONTROL, VSC] = load_parameter(Machine, Topology, CtrlSchem, CtrlFreq, Vdc);
+[MOTOR, CONTROL, VSC, SENSOR] = load_parameter(Machine, Topology, CtrlSchem, CtrlFreq, Vdc);
 
 % Simulation
 DEC = 10; % Decimation data logging

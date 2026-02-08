@@ -1,4 +1,4 @@
-function [MOTOR, CONTROL, VSC] = load_parameter(Machine, Topology, CtrlSchem, CtrlFreq, Vdc)
+function [MOTOR, CONTROL, VSC, SENSOR] = load_parameter(Machine, Topology, CtrlSchem, CtrlFreq, Vdc)
 %LOAD_PARAMETER Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -20,6 +20,7 @@ elseif strcmp(Topology,'OW') && strcmp(Machine,'Lille5Ph')
 %     load('Malaga9Ph.mat');
 end
 VSC.Vdc = Vdc;
+
 
 %%%--------- CONTROL ---------%%%
 if strcmp(CtrlSchem,'MPC')
@@ -50,8 +51,15 @@ CONTROL.Tm = CONTROL.Ts/100;% Calculation step period
 CONTROL.N_calc = round(CONTROL.Ts/CONTROL.Tm);% Calculation step into a control period 
 
 % Constantes del controlador PI de velocidad
-CONTROL.VEL.Kp   = 3.2;        % []    Proporcional constant PI speed control (revisar unidades)
-CONTROL.VEL.Ki   = 8;          % []    Integer constant PI speed control
+CONTROL.VEL.Kp   = 8;   % [] Proporcional constant PI speed control (revisar unidades)
+CONTROL.VEL.Ki   = 23;   % [] Integer constant PI speed control
+
+%%%---------  SENSOR  ---------%%%
+SENSOR.CURRENT = load('LEM_LA_125_P.mat');
+
+
+CONTROL.KALMAN.R = SENSOR.CURRENT.sigma^2 * eye(5); % Matriz de confianza del sensor
+CONTROL.KALMAN.Q = 1 * eye(5); % Matriz de confianza de la predicción
 
 
 end

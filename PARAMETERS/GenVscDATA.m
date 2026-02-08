@@ -5,6 +5,7 @@ clear all; close all; clc;
 Type = 'SC 2-Level 9Ph';
 C_link = 2000e-6;    % Capacidad del condensador del bus de continua
 NumPhase = 9;      % Número de fases del accionamiento (por defecto: 9)
+NumLegs = 9;      % Número de ramas del convertidor 
 NunLev = 2;        % Número de niveles de tensión (por defecto: 2)
 DeadTime = 0.6e-6; % Tiempos muertos del driver (por defecto: 0.6 µs)
 td  = 1e-6;        % Tiempo de subida/bajada en la respuesta (por defecto: 1 µs)
@@ -26,7 +27,8 @@ clear all
 
 Type = 'OW 2-Level 5Ph';
 C_link = 2000e-6;    % Capacidad del condensador del bus de continua
-NumPhase = 5;      % Número de fases del accionamiento (por defecto: 9)
+NumPhase = 5;      % Número de fases del accionamiento 
+NumLegs = 10;      % Número de ramas del convertidor 
 NunLev = 2;        % Número de niveles de tensión (por defecto: 2)
 DeadTime = 6e-6;   % Tiempos muertos del driver (por defecto: 0.6 µs)
 SwLoss = 0.5;      % Pérdidas por conmutación (por defecto: 0.5 J/conm)
