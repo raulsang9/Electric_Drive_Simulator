@@ -57,7 +57,9 @@ CONTROL.VEL.Ki   = 23;   % [] Integer constant PI speed control
 %%%---------  SENSOR  ---------%%%
 SENSOR.CURRENT = load('LEM_LA_125_P.mat');
 
+SENSOR.CURRENT.sigma = 1.01; % JUST FOR TEST
 
+CONTROL.KALMAN.ACTIVE = 1; % To activate Kalman filter in the control
 CONTROL.KALMAN.R = SENSOR.CURRENT.sigma^2 * eye(5); % Matriz de confianza del sensor
 CONTROL.KALMAN.Q = 1 * eye(5); % Matriz de confianza de la predicción
 
