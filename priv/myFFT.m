@@ -1,15 +1,17 @@
-function dataFFT = myFFT(signal,sample)
+function dataFFT = myFFT(signal,sample, ind0, ind1)
 % FFTPRO - FFT signal analysis
 %   INPUTS  - signal: signal to analyse
 %           - sample: Sample period of the data adquisition
 %   OUTPUT  - dataFFT: struct with all revelant information
 %
 
-% signal = signal - mean(signal);        
-N = length(signal);
+signaleval = signal(ind0:ind1);
+
+% signaleval = signaleval - mean(signaleval);        
+N = length(signaleval);
 Fs = 1/sample;              
 
-Y = fft(signal);
+Y = fft(signaleval);
 P2 = abs(Y)/N;
 
 dataFFT.mag = P2(1:floor(N/2)+1);

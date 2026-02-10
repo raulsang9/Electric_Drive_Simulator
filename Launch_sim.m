@@ -20,9 +20,8 @@ tsim     = 0.3;  % [s] Simulation time
 DEC = 10; % Decimation data logging
 tic; sim("SIMULATOR/ELECTRIC_DRIVE.slx"); elapsed = toc; disp(['Simulation time: ', num2str(elapsed), ' s' ])
 
-file = [Machine,'_',Topology,'_',CtrlSchem,'_',num2str(Vdc),'Vdc_',num2str(CtrlFreq/1000),'kHz_',num2str(speed),'rpm_',num2str(Tload),'Nm']
-
-
+file = [Topology,'_',CtrlSchem,'_',num2str(Vdc),'Vdc_',num2str(CtrlFreq/1000),'kHz_',num2str(speed),'rpm_',num2str(Tload),'Nm'];
+savesim(file, Machine, CtrlSchem)
 
 
 
@@ -55,7 +54,7 @@ cu4= legend({'i_{d}','i_{q}','i_{d}^*','i_{q}^*'},'Location','NorthEast');
 set(cu4,'NumColumns',6,'FontSize',8,'Orientation','Horizontal','EdgeColor','none','Color','none','FontName','Times New Roman','FontAngle','italic', ...
     'Position',[0.4 0.8 0.6 0.16],'ItemTokenSize',[4,4])
 xlabel('Time [s]','FontAngle','normal'); ylabel('Current [A]','FontAngle','normal'); 
-xlim([0.2 0.24]); ylim([-5 60]);
+% xlim([0.2 0.24]); ylim([-5 60]);
 grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
 hold off
 
@@ -71,7 +70,7 @@ cu4= legend({'i_{a}','i_{b}','i_{c}','i_{d}','i_{e}'},'Location','NorthEast');
 set(cu4,'NumColumns',6,'FontSize',8,'Orientation','Horizontal','EdgeColor','none','Color','none','FontName','Times New Roman','FontAngle','italic', ...
     'Position',[0.4 0.8 0.6 0.16],'ItemTokenSize',[4,4])
 xlabel('Time [s]','FontAngle','normal'); ylabel('Current [A]','FontAngle','normal'); 
-xlim([0.2 0.24]); yli = 80; ylim([-yli yli]);
+% xlim([0.2 0.24]); yli = 80; ylim([-yli yli]);
 grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
 hold off
 
