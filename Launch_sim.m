@@ -2,29 +2,52 @@
 clear all; close all; clc;
 
 % Configuration SetUp
-CtrlSchem = 'MPC';      % [MPC, MPCVV, FOCcb, FOCsv]
-Machine   = 'Lille5Ph'; % [Lille5Ph, Lille7Ph, Malaga5Ph, Malaga9Ph]
-Topology  = 'OW';       % [SC:star-connected, OW, SEW]
+CtrlSchem = 'Vf';      % [MPC, MPCVV, FOCcb, FOCsv, Vf]
+Machine   = 'Malaga5Ph'; % [Lille5Ph, Lille7Ph, Malaga5Ph, Malaga9Ph]
+Topology  = 'SC';       % [SC:star-connected, OW, SEW]
 
 % Test Setup
-speed = 500; % [rpm] Mechanical speed reference
-Tload = 3;   % [Nm] Torque load
-Vdc   = 30;  % [V] DC supply
+slp   = 1; % 14;
+speed = 100; % [rpm] Mechanical speed reference
+Tload = 1;   % [Nm] Torque load
+Vdc   = 200;  % [V] DC supply
 
 CtrlFreq = 10e3; % [Hz] Control Frequency
-tsim     = 0.3;  % [s] Simulation time
+tsim     = 2;  % [s] Simulation time
 
 [MOTOR, CONTROL, VSC, SENSOR] = load_parameter(Machine, Topology, CtrlSchem, CtrlFreq, Vdc);
 
 % Simulation
 DEC = 10; % Decimation data logging
-tic; sim("SIMULATOR/ELECTRIC_DRIVE.slx"); elapsed = toc; disp(['Simulation time: ', num2str(elapsed), ' s' ])
+tic; sim("SIMULATOR/ELECTRIC_DRIVE.slx"); elapsed = toc; disp(['Sim time: ', num2str(elapsed), ' s' ])
 
 file = [Topology,'_',CtrlSchem,'_',num2str(Vdc),'Vdc_',num2str(CtrlFreq/1000),'kHz_',num2str(speed),'rpm_',num2str(Tload),'Nm'];
-savesim(file, Machine, CtrlSchem)
+save = 0; savesim(file, Machine, CtrlSchem, save) % save = [0:OFF 1:ON]
 
 
 
+
+%% ----------   TEST METRICS   ---------- %%
+tinit = 0.16; ind0 = find(timeL>=tinit); 
+tend  = 0.3;  ind1 = find(timeL>=tend );
+
+data.Iphase = Iphase; data.timeL = timeL; data.Idq = Idq; data.Iab = Iab; data.Fsw = Fsw;
+data.METRICS = metrics(Machine, data, ind0, ind1);
+data.FFT     = myFFT(Iphase, timeL(2), ind0, ind1);
+
+% DISPLAY METRICS
+disp(' ')
+disp([Topology,'_',CtrlSchem,'_',num2str(Vdc),'Vdc_',num2str(CtrlFreq/1000),'kHz_',num2str(speed),'rpm_',num2str(Tload),'Nm'])
+disp('_______________________________')
+disp(['   Phase RMS  : ', num2str(data.METRICS.RMS), ' A'])
+disp(['   THD mat    : ', num2str(data.METRICS.THDmat.mean), ' %'])
+disp(['   Desv. idq  : ', num2str(data.METRICS.STD.idq), ' A'])
+disp(['   Desv. ixy  : ', num2str(data.METRICS.STD.ixy), ' A'])
+disp(['   Desv. ih   : ', num2str(data.METRICS.STD.ih), ' A'])
+% disp(['   Zero vector: ', num2str(data.METRICS.p100nulo), ' %'])
+disp(['   Fundament  : ', num2str(data.FFT.fund), ' rad/s'])
+disp(['   Switch freq: ', num2str(data.METRICS.fsw /1000), ' kHz'])
+disp('_______________________________')
 
 
 %% ----------   VISUALIZATION   ---------- %%
@@ -75,6 +98,31 @@ grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
 hold off
 
 
+% xy0 currents
+p1 = figure('Name','xy0 Currents','NumberTitle','off');
+p1.Units = "centimeters"; p1.Position = [0.2,14,wi,he]; figure(p1); miax = axes; hold on
+    plot(timeL, Idq(:,3),'Color',col.orange,'LineWidth',1,'LineStyle','-')
+    plot(timeL, Idq(:,4),'Color',col.violet,'LineWidth',1,'LineStyle','-')
+    plot(timeL, Idq(:,5),'Color',col.blueligh,'LineWidth',1,'LineStyle','-')
+cu4= legend({'i_{x}','i_{y}','i_{0}'},'Location','NorthEast');
+set(cu4,'NumColumns',6,'FontSize',8,'Orientation','Horizontal','EdgeColor','none','Color','none','FontName','Times New Roman','FontAngle','italic', ...
+    'Position',[0.4 0.8 0.6 0.16],'ItemTokenSize',[4,4])
+xlabel('Time [s]','FontAngle','normal'); ylabel('Current [A]','FontAngle','normal'); 
+ylim([-8 8]);% xlim([0.2 0.24]);
+grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
+hold off
+
+% FFT
+p1 = figure('Name','FFT','NumberTitle','off');
+p1.Units = "centimeters"; p1.Position = [10,14,wi,he]; figure(p1); miax = axes; hold on
+    plot(data.FFT.freq, data.FFT.mag,'Color',col.violet,'LineWidth',1,'LineStyle','-')
+cu4= legend({'FFT_{i_a}'},'Location','NorthEast');
+set(cu4,'NumColumns',6,'FontSize',8,'Orientation','Horizontal','EdgeColor','none','Color','none','FontName','Times New Roman','FontAngle','italic', ...
+    'Position',[0.4 0.8 0.6 0.16],'ItemTokenSize',[4,4])
+xlabel('Frequency [rad/s]','FontAngle','normal'); ylabel('Amplitude [A]','FontAngle','normal'); 
+xlim([0 1000]); %ylim([0 5]);
+grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
+hold off
 
 
 

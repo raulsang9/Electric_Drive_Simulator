@@ -2,18 +2,12 @@
 clear all; close all; clc;
 
 % Configuration SetUp
-CtrlSchem = 'MPC';      % [MPC, MPCVV, FOCcb, FOCsv]
 Machine   = 'Lille5Ph'; % [Lille5Ph, Lille7Ph, Malaga5Ph, Malaga9Ph]
-Topology  = 'OW';       % [SC:star-connected, OW, SEW]
-
-% Test Setup
-speed = 500; % [rpm] Mechanical speed reference
-Tload = 3;   % [Nm] Torque load
-Vdc   = 30;  % [V] DC supply
-Freq  = 10e3;% [Hz] Control Frequency
+file = 'OW_MPC_30Vdc_10kHz_500rpm_3Nm';
 
 % Data load
-data = load(['RESULTS\',Machine,'\',Topology,'_',CtrlSchem,'_',num2str(Vdc),'Vdc_',num2str(Freq/1000),'kHz_',num2str(speed),'rpm_',num2str(Tload),'Nm.mat']);
+data = load(['RESULTS\',Machine,'\',file,'.mat']);
+data.TEST = extractfile(file);
 
 % Data Processing
 tinit = 0.16; ind0 = find(data.timeL>=tinit); 

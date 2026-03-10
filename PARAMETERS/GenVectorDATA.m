@@ -37,4 +37,80 @@ clear MOTOR VSC
 
 save('PARAMETERS\VECTow5ph.mat');
 
-(5/2)*MOTOR.P*(MOTOR.Lambda*u[2]-(MOTOR.Ld-MOTOR.Lq)*u[1]*u[2])
+
+%% Single-vectors MPC SEW 5Ph
+
+MOTOR = load("PARAMETERS\Malaga5PhIM.mat");
+VSC   = load("PARAMETERS\VSCsew5ph.mat");
+
+n = MOTOR.Phase + 1;
+total_combinations = 2^n; % Total de combinaciones posibles
+S = zeros(total_combinations, n); % Matriz para almacenar todas las combinaciones
+
+% Switching states
+for i = 0:total_combinations-1
+    % Convertir el número a binario y almacenarlo en la matriz
+    S(i+1, :) = bitget(i, n:-1:1);
+end
+
+% Phase voltage
+V_abcde = zeros(MOTOR.Phase, length(S));
+VSC.Vdc = 1;
+for i = 1:length(S)
+    V_abcde(:,i) = VSC.Vdc .* VSC.K * S(i,:)';
+end
+
+% Alpha-Beta voltage
+V_abxy = zeros(MOTOR.Phase,length(S));
+for i = 1:length(S)
+    V_abxy(:,i) = MOTOR.Clarke * V_abcde(:,i);
+end
+clear n total_combinations i
+
+[~, indx] = unique(single(V_abxy).', 'rows', 'stable');
+% figure; scatter(V_abxy(1,indx), V_abxy(2,indx), 'filled', 'MarkerFaceAlpha',0.3); axis equal
+
+S = S';
+
+clear MOTOR VSC
+
+save('PARAMETERS\VECTsew5ph.mat');
+
+
+%% Single-vectors MPC 9Ph
+
+MOTOR = load("PARAMETERS\Malaga9Ph.mat");
+VSC   = load("PARAMETERS\VSCsc9ph.mat");
+
+n = MOTOR.Phase;
+total_combinations = 2^n; % Total de combinaciones posibles
+S = zeros(total_combinations, n); % Matriz para almacenar todas las combinaciones
+
+% Switching states
+for i = 0:total_combinations-1
+    % Convertir el número a binario y almacenarlo en la matriz
+    S(i+1, :) = bitget(i, n:-1:1);
+end
+
+% Phase voltage
+V_abcde = zeros(MOTOR.Phase, length(S));
+VSC.Vdc = 1;
+for i = 1:length(S)
+    V_abcde(:,i) = VSC.Vdc .* VSC.K * S(i,:)';
+end
+
+% Alpha-Beta voltage
+V_abxy = zeros(MOTOR.Phase,length(S));
+for i = 1:length(S)
+    V_abxy(:,i) = MOTOR.Clarke * V_abcde(:,i);
+end
+clear n total_combinations i
+
+[~, indx] = unique(single(V_abxy).', 'rows', 'stable');
+% figure; scatter(V_abxy(1,indx), V_abxy(2,indx), 'filled', 'MarkerFaceAlpha',0.3); axis equal
+
+S = S';
+
+clear MOTOR VSC
+
+save('PARAMETERS\VECTsew5ph.mat');

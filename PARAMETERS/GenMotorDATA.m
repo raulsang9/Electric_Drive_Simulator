@@ -35,6 +35,8 @@ Clarke=(2/5)*...
     1/(2)      1/(2)        1/(2)       1/(2)       1/(2)]	 ;
 invClarke = inv(Clarke);
 
+Kw    = 1;            % (-) Ratio between rotor and stator parameters
+
 % Mechanical parameters
 B = 0.0242;   % Friction coefficient
 J = 0.0052;   % Inertia
@@ -43,9 +45,67 @@ clear ang
 save('PARAMETERS/Lille5Ph.mat')
 clear all
 
+%% 5Phase IM Málaga %%
+Index = 2; % To activate this subsytem in SIMULINK
+Phase = 5;           % Phases number 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Machine Parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Parametros para la maquina -  Malaga
+Rs    = 3.12;         % (Omh) Resistence of stator
+Rr    = 1.1384;       % (Omh) Resistence of rotor
+Lls   = 0.0344;       % (H) Leakage Inductance of the stator
+Llr   = 0.4887;       % (H) Leakage Inductance of the rotor
+P     = 3;            % (-) Pair of poles
+J     = 0.00500;      % (Kg/m^2) Rotational Inertia of the rotor
+Bm    = 0.00;         % (Nms/rad) Coefficient of friction
+Lm    = 0.3244;       % (H) Mutue Inductance Transformation
+
+Ls    = Lls + Lm;     % (H)
+Lr    = Llr + Lm;     % (H)
+Kw    = 1;            % (-) Ratio between rotor and stator parameters
+
+%Parametros para modelo predictivo
+Rr1 = Rr;
+Lm1 = Lm;
+Lr1 = Llr+Lm1;
+Ls1 = Lls+Lm1;
+
+% Matriz empleada en el modelo de Simulink de la máquina
+A = [Ls   0    0   0   0     Lm  0   0   0   0   ;
+     0   Ls    0   0   0     0   Lm  0   0   0   ;
+     0    0   Lls  0   0     0   0   0   0   0   ;
+     0    0    0  Lls  0     0   0   0   0   0   ;
+     0    0    0   0  Lls    0   0   0   0   0   ;
+     
+     Lm   0    0   0   0     Lr  0   0   0   0   ;
+     0    Lm   0   0   0     0   Lr  0   0   0   ;
+     0    0    0   0   0     0   0  Llr  0   0   ;
+     0    0    0   0   0     0   0   0  Llr  0   ;
+     0    0    0   0   0     0   0   0   0  Llr  ];
+
+invA = inv(A);
+
+%%%%%%%%%%%%%%%%%%%%%% Clarke transformation matrix %%%%%%%%%%%%%%%%%%%%%%
+% Máquina de cinco fases simétrica (invariante en amplitud)
+ang=(2*pi)/5;
+Clarke = (2/5)*[1    cos(ang)    cos(2*ang)   cos(2*ang)  cos(ang);
+                0    sin(ang)    sin(2*ang)  -sin(2*ang) -sin(ang);
+                1    cos(2*ang)  cos(4*ang)   cos(4*ang)  cos(2*ang);
+                0    sin(2*ang)  sin(4*ang)  -sin(4*ang) -sin(2*ang);
+                0.5     0.5            0.5            0.5           0.5    ];
+
+
+invClarke = inv(Clarke);
+
+
+save('PARAMETERS/Malaga5PhIM.mat')
+clear all
+
+
+
 %% 7Phase SM Lille %%
 % Electrical parameters
-Index = 3; % To activate this subsytem in SIMULINK
+Index = 4; % To activate this subsytem in SIMULINK
 Phase = 7;
 P  = 7;
 RatedCurr = 100;
@@ -93,7 +153,7 @@ clear all
 % Electrical parameters
 
 Type = 'PMSM 9Ph';           % Electric machine type (by default: PMSM)
-Index = 2; % To activate this subsytem in SIMULINK
+Index = 3; % To activate this subsytem in SIMULINK
 Phase = 9;           % Phases number (by default: 9)
 P = 3;             % Pair pole number (by default: 3)
 RatedPower = 15;   % [kW]  Nominal power (por defecto: 15 kW)
@@ -151,11 +211,3 @@ save('PARAMETERS/Malaga9Ph.mat')
 clear all
 
 
-%% 5Phase IM Málaga %%
-Index = 4; % To activate this subsytem in SIMULINK
-Phase = 5;           % Phases number 
-
-
-
-save('PARAMETERS/Malaga5Ph.mat')
-clear all

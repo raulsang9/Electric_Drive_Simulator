@@ -4,18 +4,25 @@ function [MOTOR, CONTROL, VSC, SENSOR] = load_parameter(Machine, Topology, CtrlS
 
 %%%--------- MACHINE ---------%%%
 if strcmp(Machine,'Lille5Ph')
-    MOTOR = load('Lille5Ph.mat');
+    MOTOR = load('Lille5Ph.mat'); 
+elseif strcmp(Machine,'Malaga5Ph')
+    MOTOR = load('Malaga5PhIM.mat');
 elseif strcmp(Machine,'Lille7Ph')
-    MOTOR = load('Lille7Ph.mat');
+    MOTOR = load('Lille7Ph.mat'); 
 elseif strcmp(Machine,'Malaga9Ph')
     MOTOR = load('Malaga9Ph.mat');
 end
 
 %%%---------   VSC   ---------%%%
-if strcmp(Topology,'SC') && strcmp(Machine,'Malaga9Ph')
-    VSC = load('VSCsc9ph.mat');
+if strcmp(Topology,'SC')
+    if strcmp(Machine,'Malaga9Ph'),    VSC = load('VSCsc9ph.mat'); 
+    elseif strcmp(Machine,'Lille5Ph'), VSC = load('VSCsc5ph.mat'); 
+    elseif strcmp(Machine,'Malaga5Ph'), VSC = load('VSCsc5ph.mat'); 
+    end
 elseif strcmp(Topology,'OW') && strcmp(Machine,'Lille5Ph')
     VSC = load('VSCow5ph.mat');
+elseif strcmp(Topology,'SEW') && strcmp(Machine,'Lille5Ph')
+    VSC = load('VSCsew5ph.mat');
 % elseif strcmp(Topology,'SEW')
 %     load('Malaga9Ph.mat');
 end
@@ -26,7 +33,11 @@ VSC.Vdc = Vdc;
 if strcmp(CtrlSchem,'MPC')
     if strcmp(Machine,'Lille5Ph')
         CONTROL = load('MPC_Lille5ph.mat');
-        CONTROL.VECT = load('VECTow5ph.mat');
+        if strcmp(Topology,'OW')
+            CONTROL.VECT = load('VECTow5ph.mat');
+        elseif strcmp(Topology,'SEW')
+            CONTROL.VECT = load('VECTsew5ph.mat');
+        end
     elseif strcmp(Machine,'Lille7Ph')
         CONTROL = load('MPC_Lille7Ph.mat');
     elseif strcmp(Machine,'Malaga9Ph')
@@ -43,6 +54,8 @@ elseif strcmp(CtrlSchem,'MPCVV')
     end
 elseif strcmp(CtrlSchem,'FOC')
     CONTROL = load('FOC.mat');
+elseif strcmp(CtrlSchem,'Vf')
+    CONTROL = load('Vf_5ph.mat');
 end
 
 CONTROL.Vdc = Vdc;
