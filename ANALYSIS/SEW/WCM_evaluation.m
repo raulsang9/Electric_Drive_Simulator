@@ -6,13 +6,13 @@ vI = 0.618;
 ang = 2*pi/5;
 
 ia = i;
-ib = i*(cos(-ang) + j*sin(-ang));
+ib = i*(cos(-ang)   + j*sin(-ang));
 ic = i*(cos(-2*ang) + j*sin(-2*ang));
 id = i*(cos(-3*ang) + j*sin(-3*ang));
 ie = i*(cos(-4*ang) + j*sin(-4*ang));
 
 va = v;
-vb = v*(cos(-ang) + j*sin(-ang));
+vb = v*(cos(-ang)   + j*sin(-ang));
 vc = v*(cos(-2*ang) + j*sin(-2*ang));
 vd = v*(cos(-3*ang) + j*sin(-3*ang));
 ve = v*(cos(-4*ang) + j*sin(-4*ang));

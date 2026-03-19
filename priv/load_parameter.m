@@ -53,7 +53,17 @@ elseif strcmp(CtrlSchem,'MPCVV')
         CONTROL = load('MPCvv_Malaga9Ph.mat');
     end
 elseif strcmp(CtrlSchem,'FOC')
-    CONTROL = load('FOC.mat');
+    if strcmp(Machine,'Lille5Ph')
+        CONTROL = load('FOC_Lille5ph.mat');
+    elseif strcmp(Machine,'Malaga9Ph')
+        CONTROL = load('FOC_Malaga9ph.mat');
+    end
+
+elseif strcmp(CtrlSchem,'Hybrid')
+    if strcmp(Machine,'Lille5Ph')
+        CONTROL = load('HybridPIMPC_Lille5ph.mat');
+    end
+
 elseif strcmp(CtrlSchem,'Vf')
     CONTROL = load('Vf_5ph.mat');
 end

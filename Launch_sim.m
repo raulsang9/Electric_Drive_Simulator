@@ -2,18 +2,18 @@
 clear all; close all; clc;
 
 % Configuration SetUp
-CtrlSchem = 'Vf';      % [MPC, MPCVV, FOCcb, FOCsv, Vf]
-Machine   = 'Malaga5Ph'; % [Lille5Ph, Lille7Ph, Malaga5Ph, Malaga9Ph]
-Topology  = 'SC';       % [SC:star-connected, OW, SEW]
+CtrlSchem = 'Hybrid';      % [MPC, MPCVV, FOCcb, FOCsv, Vf, Hybrid]
+Machine   = 'Lille5Ph'; % [Lille5Ph, Lille7Ph, Malaga5Ph, Malaga9Ph]
+Topology  = 'OW';       % [SC:star-connected, OW, SEW]
 
 % Test Setup
 slp   = 1; % 14;
-speed = 100; % [rpm] Mechanical speed reference
-Tload = 1;   % [Nm] Torque load
-Vdc   = 200;  % [V] DC supply
+speed = 500; % [rpm] Mechanical speed reference
+Tload = 3;   % [Nm] Torque load
+Vdc   = 30;  % [V] DC supply
 
 CtrlFreq = 10e3; % [Hz] Control Frequency
-tsim     = 2;  % [s] Simulation time
+tsim     = 0.4;  % [s] Simulation time
 
 [MOTOR, CONTROL, VSC, SENSOR] = load_parameter(Machine, Topology, CtrlSchem, CtrlFreq, Vdc);
 
@@ -112,19 +112,32 @@ ylim([-8 8]);% xlim([0.2 0.24]);
 grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
 hold off
 
-% FFT
+% FFT Hz
 p1 = figure('Name','FFT','NumberTitle','off');
 p1.Units = "centimeters"; p1.Position = [10,14,wi,he]; figure(p1); miax = axes; hold on
-    plot(data.FFT.freq, data.FFT.mag,'Color',col.violet,'LineWidth',1,'LineStyle','-')
+    plot(data.FFT.freq/(2*pi), data.FFT.mag,'Color',col.violet,'LineWidth',1,'LineStyle','-')
 cu4= legend({'FFT_{i_a}'},'Location','NorthEast');
 set(cu4,'NumColumns',6,'FontSize',8,'Orientation','Horizontal','EdgeColor','none','Color','none','FontName','Times New Roman','FontAngle','italic', ...
     'Position',[0.4 0.8 0.6 0.16],'ItemTokenSize',[4,4])
-xlabel('Frequency [rad/s]','FontAngle','normal'); ylabel('Amplitude [A]','FontAngle','normal'); 
-xlim([0 1000]); %ylim([0 5]);
+xlabel('Frequency [Hz]','FontAngle','normal'); ylabel('Amplitude [A]','FontAngle','normal'); 
+xlim([0 4000]); %ylim([0 5]);
 grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
 hold off
 
-
-
+% FFT order
+p1 = figure('Name','FFT','NumberTitle','off');
+p1.Units = "centimeters"; p1.Position = [20,14,wi,he]; figure(p1); miax = axes; hold on
+    plot(data.FFT.order, data.FFT.mag,'Color',col.violet,'LineWidth',1,'LineStyle','-')
+xlabel('Harmonic order','FontAngle','normal'); ylabel('Amplitude [A]','FontAngle','normal'); xlim([0 50]); %ylim([0 5]);
+    ax_zoom = [0.33 0.4 0.58 0.52];
+    ax_inset = axes('Position', ax_zoom); % [X Y Width Height] en escala 0-1
+    plot2=plot(ax_inset, data.FFT.order, data.FFT.mag,'LineWidth',1, 'Color', col.violet); % Graficar en el eje inset
+    cu4= legend({'FFT i_a'},'Location','NorthEast'); set(cu4,'FontSize',9,'Orientation','Horizontal','EdgeColor','none','Color','none','FontName','Times New Roman','FontAngle','italic',...
+    'Position',[0.48 0.68 0.568904593639576 0.225352112676056],'ItemTokenSize',[5,4])
+    set(ax_inset,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
+    xlim(ax_inset, [0 10]); xticks(ax_inset,[ 1  3  5  7  9 ]);  % Definir zoom en X
+    ylim(ax_inset, [0 3]); % Definir zoom en Y
+grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
+hold off
 
 
