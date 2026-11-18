@@ -5,7 +5,7 @@ t = linspace(0,2*pi,n);
 
 m = 0.85*sin(t);
 p1 = (sawtooth(20*t, 0.5) + 1) / 2;
-p2 = -p1;
+p2 = p1-1;
 
 p1f = sin((50/2)*t);
 
@@ -32,7 +32,8 @@ f.Units = "centimeters"; f.Position = [10,21,10,3]; figure(f); miax = axes; hold
 xlabel('Time','FontAngle','normal'); ylabel('V [pu]','FontAngle','normal'); 
 xlim([0 2*pi-0.12]); ylim([-1 1]); yticks([-1 0 1]); xticks([])
 grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
-hold off
+exportSVG(miax,'ANALYSIS\MODULATION\CB_PhaseShift.svg');hold off; 
+
 
 % Phase currents
 f = figure('Name','Carrier Base OW','NumberTitle','off');
@@ -44,7 +45,7 @@ f.Units = "centimeters"; f.Position = [10,16,10,3]; figure(f); miax = axes; hold
 xlabel('Time','FontAngle','normal'); ylabel('V [pu]','FontAngle','normal'); 
 xlim([0 2*pi-0.12]); ylim([-1 1]); yticks([-1 0 1]); xticks([])
 grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
-hold off
+exportSVG(miax,'ANALYSIS\MODULATION\CB_Voltage.svg');hold off; 
 
 
 f = figure('Name','VSC1','NumberTitle','off');
@@ -56,7 +57,7 @@ f.Units = "centimeters"; f.Position = [10,11,10,1.5]; figure(f); miax = axes; ho
 xlabel('Time','FontAngle','normal'); ylabel('V [pu]','FontAngle','normal'); 
 xlim([0 2*pi-0.12]); ylim([0 1]); yticks([0 1]); xticks([])
 grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
-hold off
+exportSVG(miax,'ANALYSIS\MODULATION\CB_PulseVSC1.svg');hold off; 
 
 f = figure('Name','VSC2','NumberTitle','off');
 f.Units = "centimeters"; f.Position = [10,6,10,1.5]; figure(f); miax = axes; hold on; box on
@@ -67,4 +68,27 @@ f.Units = "centimeters"; f.Position = [10,6,10,1.5]; figure(f); miax = axes; hol
 xlabel('Time','FontAngle','normal'); ylabel('V [pu]','FontAngle','normal'); 
 xlim([0 2*pi-0.12]); ylim([0 1]); yticks([0 1]); xticks([])
 grid on; set(miax,'FontSize',9,'GridLineStyle',':','FontName','Times New Roman')
-hold off
+exportSVG(miax,'ANALYSIS\MODULATION\CB_PulseVSC2.svg');hold off; 
+
+
+
+
+
+f = figure('Name','Test','NumberTitle','off');figure(f);
+
+axis off   % Oculta ejes, ticks y etiquetas
+
+    text(0.2,0.5, '$v$', 'FontSize',300,'Color',[0 0 0],'FontName','Times New Roman','FontAngle','italic','Interpreter','latex')
+
+exportSVG(f,'ANALYSIS\MODULATION\v_latex.svg');hold off; 
+
+
+f = figure('Name','Test','NumberTitle','off');figure(f);
+
+axis off   % Oculta ejes, ticks y etiquetas
+
+    text(0.2,0.5, '$v$', 'FontSize',300,'Color',[227 84 137]/255,'FontName','Times New Roman','FontAngle','italic','Interpreter','latex')
+
+exportSVG(f,'ANALYSIS\MODULATION\v_latexROSA.svg');hold off; 
+
+

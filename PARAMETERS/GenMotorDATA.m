@@ -101,6 +101,71 @@ invClarke = inv(Clarke);
 save('PARAMETERS/Malaga5PhIM.mat')
 clear all
 
+%% 6Phase IM Málaga %%
+Index = 6; % To activate this subsytem in SIMULINK
+Phase = 6;           % Phases number 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Machine Parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Rs    = 14.2;         % (Omh) Resistence of stator
+Rr    = 2.04;         % (Omh) Resistence of rotor
+Lls   = 0.0015;       % (H) Leakage Inductance of the stator
+Llr   = 0.05512;      % (H) Leakage Inductance of the rotor
+P     = 3;            % (-) Pair of poles
+J     = 0.005;        % (Kg/m^2) Rotational Inertia of the rotor
+Bm    = 0.00;         % (Nms/rad) Coefficient of friction
+Lm    = 0.4198;       % (H) Mutue Inductance Transformation
+Ls    = Lls + Lm;     % (H)
+Lr    = Llr + Lm;     % (H)
+Kw    = 1;            % (-) Ratio between rotor and stator parameters
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Flux-Current Matrix %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%[F]=[A]*[I]
+  
+% |Fs_alpha|   | Ls   0   0   0   0   0   Lm  0   0   0   0   0 |   |Is_alpha|
+% |Fs_beta |   |  0  Ls   0   0   0   0   0   Lm  0   0   0   0 |   |Is_beta |
+% |Fs_x    |   |  0   0 Lls   0   0   0   0   0   0   0   0   0 |   |Is_x    |
+% |Fs_y    |   |  0   0   0 Lls   0   0   0   0   0   0   0   0 |   |Is_y    |
+% |Fs_z    |   |  0   0   0   0 Lls   0   0   0   0   0   0   0 |   |Is_z    |
+% |Fs_z1   |   |  0   0   0   0   0   Lls 0   0   0   0   0   0 |   |Is_z1   |
+% |Fr_alpha| = | Lm   0   0   0   0   0   Lr  0   0   0   0   0 | * |Ir_alpha|
+% |Fr_beta |   |  0  Lm   0   0   0   0   0  Lr   0   0   0   0 |   |Ir_beta |
+% |Fr_x    |   |  0   0   0   0   0   0   0   0 Llr   0   0   0 |   |Ir_x    |
+% |Fr_y    |   |  0   0   0   0   0   0   0   0   0 Llr   0   0 |   |Ir_y    |
+% |Fr_z    |   |  0   0   0   0   0   0   0   0   0   0 Llr   0 |   |Ir_z    |
+% |Fr_z1   |   |  0   0   0   0   0   0   0   0   0   0   0 Llr |   |Ir_z1   |
+
+A = [Ls   0    0   0   0   0      Lm  0   0   0   0   0;
+     0   Ls    0   0   0   0      0   Lm  0   0   0   0;
+     0    0   Lls  0   0   0      0   0   0   0   0   0;
+     0    0    0  Lls  0   0      0   0   0   0   0   0;
+     0    0    0   0  Lls  0      0   0   0   0   0   0;
+     0    0    0   0   0  Lls     0   0   0   0   0   0;
+    
+     Lm   0    0   0   0   0      Lr  0   0   0   0   0;
+     0    Lm   0   0   0   0      0   Lr  0   0   0   0;
+     0    0    0   0   0   0      0   0  Llr  0   0   0;
+     0    0    0   0   0   0      0   0   0  Llr  0   0;
+     0    0    0   0   0   0      0   0   0   0  Llr  0;
+     0    0    0   0   0   0      0   0   0   0   0  Llr];
+invA = inv(A);
+
+%%%%%%%%%%%%%%%%%%%%%% Clarke transformation matrix %%%%%%%%%%%%%%%%%%%%%%
+
+Clarke = (1/3)*[1         -1/2         -1/2    sqrt(3)/2   -sqrt(3)/2    0;
+           0    sqrt(3)/2   -sqrt(3)/2          1/2          1/2   -1;
+           1         -1/2         -1/2   -sqrt(3)/2    sqrt(3)/2    0;
+           0   -sqrt(3)/2    sqrt(3)/2          1/2          1/2   -1;
+           1            1            1            0            0    0;
+           0            0            0            1            1    1];
+
+invClarke = inv(Clarke);
+
+
+save('PARAMETERS/Malaga6PhIM.mat')
+clear all
+
 
 
 %% 7Phase SM Lille %%
